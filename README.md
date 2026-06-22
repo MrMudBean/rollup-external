@@ -1,12 +1,10 @@
 # @vvi/rollup-external
 
-[![version](<https://img.shields.io/npm/v/@vvi/rollup-external.svg?logo=npm&logoColor=rgb(0,0,0)&label=版本号&labelColor=rgb(73,73,228)&color=rgb(0,0,0)>)](https://www.npmjs.com/package/@vvi/rollup-external) [![issues 提交](<https://img.shields.io/badge/issues-提交-rgb(255,0,63)?logo=github>)](https://github.com/MrMudBean/rollup-external/issues)
+[![version](<https://img.shields.io/npm/v/@vvi/rollup-external.svg?logo=npm&logoColor=rgb(0,0,0)&label=版本号&labelColor=rgb(73,73,228)&color=rgb(0,0,0)>)](https://www.npmjs.com/package/@vvi/rollup-external) [![issues 提交](<https://img.shields.io/badge/issues-提交-rgb(255,0,63)?logo=github>)](https://github.com/MrMudBean/rollup-external/issues) [![英文](<https://img.shields.io/badge/英文-rgb(30,255,255)?logo=readme>)](./README.en.md)  [![chinese](<https://img.shields.io/badge/chinese-rgb(125,125,125)?logo=readme>)](.)
 
- 一个简单的 rollup 构建打包时的排除外部依赖的函数（多用于构建 npm 库包）
+一个简单的 rollup 构建打包时的排除外部依赖的函数（多用于构建 npm 库包）。
 
-因为我在构建新的 npm 库包时，常因不仔细导致包
-
-## 安装
+## 📦 安装
 
 ```bash
 npm install  --save-dev @vvi/rollup-external

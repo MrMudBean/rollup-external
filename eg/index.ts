@@ -2,7 +2,7 @@ import { external } from '../src/index';
 
 const testList: [string, string | undefined, boolean][] = [
   ['color', 'qqi', false],
-  ['color-pen', '', true],
+  ['color-pen', '', false],
 ];
 
 const _e = external(
