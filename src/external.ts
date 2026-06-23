@@ -6,7 +6,7 @@
  * @copyright 2026 ©️ Mr.MudBean
  * @since 2026-06-19 20:24
  * @version 1.1.2
- * @lastModified 2026-06-23 08:37
+ * @lastModified 2026-06-23 15:30
  */
 
 import {
@@ -132,7 +132,7 @@ export class External {
         return result;
       }
     }
-
+    testStartRegExp.lastIndex = 0;
     // 所有以 `.`、`/`、`X:/` 开头的都视为内部使用的方法
     if (testStartRegExp.test(id)) {
       return this.putPocket(
