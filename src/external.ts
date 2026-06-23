@@ -6,21 +6,18 @@
  * @copyright 2026 ©️ Mr.MudBean
  * @since 2026-06-19 20:24
  * @version 1.1.2
- * @lastModified 2026-06-22 14:24
+ * @lastModified 2026-06-23 08:37
  */
 
 import {
   isArray,
   isBoolean,
   isEmptyArray,
-  isFalse,
   isNull,
   isString,
   isTrue,
   isType,
 } from '@vvi/is';
-import type { ExternalOption, LogInfo } from './types';
-import { parseParameter } from './parseParameter';
 import { _p, fileExist, getPackageJsonSync, pathJoin } from '@vvi/node';
 import {
   bgBlackPen,
@@ -29,9 +26,16 @@ import {
   magentaPen,
   reversedPen,
 } from '@vvi/pen';
-import { pen } from './pen';
 import { copy } from './copy';
+import { parseParameter } from './parseParameter';
+import { pen } from './pen';
+import type { CustomCb, ExternalOption, LogInfo } from './types';
 
+const testStartRegExp = /^(\/)|^(\w:[\\|/])|^\./gim;
+
+/**
+ *
+ */
 export class External {
   /** 是否允许执行打印 */
   canLog: boolean = false;
@@ -49,6 +53,11 @@ export class External {
   include: string[];
   /** 包含的包且含特定后缀，用于降低构建 */
   includeArray: string[];
+  /** 自定义执行方案 */
+  custom?: CustomCb;
+  /**
+   *
+   */
   constructor(
     options?: ExternalOption | LogInfo,
     /** 打印消息 */
@@ -65,7 +74,7 @@ export class External {
     }
     this.canLog = isTrue(logInfo) || (isArray(logInfo) && logInfo.length > 0);
     this.logInfo = logInfo;
-    const { exclude, ignore, include } = parseParameter(options);
+    const { exclude, ignore, include, custom } = parseParameter(options);
     if (this.canLog) {
       console.log('当前的工作路径：', reversedPen(this.cwd));
     }
@@ -102,6 +111,7 @@ export class External {
     this.ignorePkg = ignorePkg;
     this.include = include;
     this.includeArray = includeArray;
+    this.custom = custom;
     // 锁定 this
     this.external = this.external.bind(this);
   }
@@ -116,13 +126,21 @@ export class External {
       isTrue(this.canLog) ||
       (isArray(this.logInfo) && this.logInfo.some(e => id?.includes(e)));
 
-    if (id.startsWith('.')) {
+    if (this.custom && typeof this.custom === 'function') {
+      const result = this.custom(id, parentId, isResolved);
+      if (isBoolean(result)) {
+        return result;
+      }
+    }
+
+    // 所有以 `.`、`/`、`X:/` 开头的都视为内部使用的方法
+    if (testStartRegExp.test(id)) {
       return this.putPocket(
         { id, message: `当前 id 「${id}」为相对路径`, isLog },
         false,
       );
     }
-    /** 并不影响实际效果 */
+    /** 并不影响实际效果（现在这种情况已经被包含于上面的内连） */
     if (isResolved) {
       return this.putPocket(
         {
@@ -210,7 +228,7 @@ export class External {
   /** 返回值 */
   putPocket(
     {
-      id,
+      id: _id,
       message,
       isLog,
     }: {

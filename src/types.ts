@@ -6,7 +6,7 @@
  * @copyright 2026 ©️ Mr.MudBean
  * @since 2026-06-20 17:31
  * @version 1.1.2
- * @lastModified 2026-06-20 17:48
+ * @lastModified 2026-06-23 08:26
  */
 
 /** 排除设定选项 */
@@ -20,7 +20,28 @@ export type ExternalOption = {
    *
    * 但是该项不像 ignore 和 exclude 是 `startsWith` 匹配，该项是完整权等匹配  */
   include?: string[] | string;
+  /**
+   * ## 自定义处理方法
+   * 如果该方法返回的是布尔值，则以该返回值为判定是否排除依赖的依据，否则将执行默认判定
+   * @param id 当前判定的被引入路径/链接
+   * @param parentId 引入 id 的文件路径
+   * @param isResolved 当前是否已被插件处理解析为绝对路径
+   */
+  custom?: CustomCb;
 };
+
+export type CustomCb = typeof customCb;
+
+/**
+ * @param id 当前判定的被引入路径/链接
+ * @param parentId 引入 id 的文件路径
+ * @param isResolved 当前是否已被插件处理解析为绝对路径
+ */
+function customCb /**  */(
+  id: string | undefined,
+  parentId?: string,
+  isResolved?: boolean,
+): boolean | any {}
 
 /** 打印消息 */
 export type LogInfo = boolean | string | string[];

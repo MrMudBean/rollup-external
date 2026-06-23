@@ -1,5 +1,5 @@
-import type { ExternalOption, LogInfo } from './types';
 import { External } from './external';
+import type { ExternalOption, LogInfo } from './types';
 
 /**
  * # 依赖配置
